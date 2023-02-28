@@ -1,15 +1,25 @@
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { ContactForm } from './ContactForm/ContactForm';
 import css from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, addContact, filterContacts } from 'redux/contactsSlise';
+import {
+  deleteContact,
+  fetchContacts,
+  addContact,
+} from 'redux/contactsOperations';
+import { filterContacts } from 'redux/contactsSlise';
+import { useEffect } from 'react';
 
 export function App() {
-  const contacts = useSelector(state => state.contactsData.contacts);
+  const contacts = useSelector(state => state.contactsData.contacts.items);
   const filter = useSelector(state => state.contactsData.filter);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const sendContact = contact => {
     const repeatName = contacts.find(({ name }) => {
@@ -19,7 +29,7 @@ export function App() {
       alert(`${contact.name} is already in your contacts!`);
       return;
     }
-    dispatch(addContact({ id: nanoid(), ...contact }));
+    dispatch(addContact({ ...contact }));
   };
 
   const onBtnDelete = e => {

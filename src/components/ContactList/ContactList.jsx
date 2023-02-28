@@ -1,9 +1,6 @@
-import { useSelector } from 'react-redux';
 import css from './ContactList.module.css';
 
-export function ContactList({ onBtnDelete }) {
-  const contacts = useSelector(state => state.contactsData.contacts);
-
+export function ContactList({ onBtnDelete, contacts }) {
   return (
     <ul className={css.contactList}>
       {contacts.map(item => (
